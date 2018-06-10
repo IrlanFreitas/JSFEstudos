@@ -1,0 +1,57 @@
+Java e JSF I
+
+
+JSF - Java Server Faces é a documentação, Mojarra é uma das implementações.
+
+@ManagedBean - Indica que a classe será gerenciada pelo JSF. Objetos dessa classe serão administrados pelo JSF. 
+Ou seja, o JSF vai decidir quando criar um objeto da classe LivroBean.
+
+Expression Language - #{} - É o que liga(binding) a class com o xhtml, por exemplo:
+
+action=" #{livroBean.gravar} "
+
+É utilizado um Servlet Container - Tomcat que é diferente de um Servidor de Aplicação/EJB Container
+
+Estamos usando o Dynamic Web Project com os modules na versão 3.0
+
+As libs externas são colocadas dentro da pasta WebContent > WEB-INF > lib.
+
+web.xml - relacionado com a especificação servlet.
+
+faces-config.xml - relacionado as configurações de JSF, como a utilização de anotações é utilizada da versão 2
+ele é pouco utilizado.
+
+É necessária uma mudança no mapeamento dentro do web.xml
+
+De:
+
+	<servlet-mapping>
+    	<servlet-name>Faces Servlet</servlet-name>
+    	<url-pattern>/faces/*</url-pattern>
+  	</servlet-mapping>
+
+Para:
+
+	<servlet-mapping>
+    	<servlet-name>Faces Servlet</servlet-name>
+    	<url-pattern>*.xhtml</url-pattern>
+  	</servlet-mapping>
+  	
+  	
+  	
+É usado o padrão XHTML para desenvolver as páginas e "injetar" o jsf com os namespaces(importações) por exemplo:
+
+	xmlns:h="http://java.sun.com/jsf/html" - Importação que serve para declarar componentes JSF
+	
+
+Observação: Interessante o uso da tag fieldset + legend, tem um efeito legal na página.
+
+ManagedBean != SessionBean - ManagedBean é para JSF, SessionBean é para EJB Container.
+
+Por padrão qualquer JAR da aplicação web deve estar dentro da pasta WEB-INF/lib.
+
+O servlet JSF tem o papel do controlador.
+
+
+	
+	
