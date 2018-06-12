@@ -53,5 +53,33 @@ Por padrão qualquer JAR da aplicação web deve estar dentro da pasta WEB-INF/lib.
 O servlet JSF tem o papel do controlador.
 
 
+
+Modelo arquitetural MVC: Model-View-Controller
+
+eguimos um modelo arquitetural de separação em três camadas na qual cada camada possui uma responsabilidade bem definida. 
+A primeira camada é a do controlador, que recebe a requisição e decide qual página chamar (Faces Servlet). A segunda é a da visão 
+(a definição da interface gráfica, XHTML). E por último, temos o nosso modelo (que representa o domínio da aplicação). 
+O ManagedBean é um intermediário e sua responsabilidade pode variar. Este modelo arquitetural é chamado Model-View-Controller ou MVC.
+
+Tem uma imagem na pasta info que ajuda na explicação, MVC - Java Server Faces.png
+
+
+
+O ciclo de vida básico dos componentes JSF
+
+Links referência:
+
+https://www.devmedia.com.br/ciclo-de-vida-do-javaserver-faces-jsf/27893
+https://imasters.com.br/back-end/conheca-o-ciclo-fe-vida-do-jsf
+https://medium.com/@rafaelvicio/entendendo-o-ciclo-de-vida-do-jsf-c003a76924da
+
+
+JSF – Lidando com o estado da view
+
+http://blog.caelum.com.br/jsf-lidando-com-o-estado-da-view/
+
+
+
+
 	
 	
