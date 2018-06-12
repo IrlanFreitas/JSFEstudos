@@ -1,36 +1,33 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html">
 
 <h:body>
-
-	<h1>Novo livro</h1>
+	<h1>Novo Livro</h1>
 	<h:form>
 		<fieldset>
-			<legend>Dados do livro</legend>
+			<legend>Dados do Livro</legend>
 			<h:panelGrid columns="2">
 
-				<h:outputLabel for="titulo" value="Titulo:" />
+				<h:outputLabel value="Titulo:" for="titulo" />
 				<h:inputText id="titulo" value="#{livroBean.livro.titulo}" />
 
-				<h:outputLabel for="isbn" value="ISBN:" />
+				<h:outputLabel value="ISBN:" for="isbn" />
 				<h:inputText id="isbn" value="#{livroBean.livro.isbn}" />
 
-
-				<h:outputLabel for="preco" value="Preço:" />
+				<h:outputLabel value="PreÃ§o:" for="preco" />
 				<h:inputText id="preco" value="#{livroBean.livro.preco}" />
 
-				<h:outputLabel for="dataLancamento" value="Data de Lançamento:" />
+				<h:outputLabel value="Data de LanÃ§amento:" for="dataLancamento" />
 				<h:inputText id="dataLancamento"
 					value="#{livroBean.livro.dataLancamento}" />
 
-				<h:commandButton value="Gravar" action="#{livroBean.gravar}" />
-
 			</h:panelGrid>
 		</fieldset>
+
+		<h:commandButton value="Gravar" action="#{livroBean.gravar}" />
 	</h:form>
 </h:body>
-
 
 </html>
