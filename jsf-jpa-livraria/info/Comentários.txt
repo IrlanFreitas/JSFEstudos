@@ -74,12 +74,59 @@ https://imasters.com.br/back-end/conheca-o-ciclo-fe-vida-do-jsf
 https://medium.com/@rafaelvicio/entendendo-o-ciclo-de-vida-do-jsf-c003a76924da
 
 
+
 JSF – Lidando com o estado da view
 
 http://blog.caelum.com.br/jsf-lidando-com-o-estado-da-view/
 
 
 
+Erro de Utilização de Dados da Tela 
 
+Nesse situação a tela possuí um combo box com os Autores e tem o método que associa com o Livro.
+E outro método que envia para o banco "todos" esses dados porem, mesmo depois de ter associado o erro persiste pois, 
+os dados são perdidos nas requisições, cada método faz uma requisição ao servidor e como está configurado 
+como escopo de requisição por padrão @RequestScoped, os dados são perdidos ocasionando o erro, é necessário
+modificar para que os dados durem enquanto a tela durar, seria o escopo de tela @ViewScoped.
+
+
+
+A utilização dos componente é fácil, necessário saber o funcionamento, que pode ser aprendido com Showcases do PrimeFaces por exemplo.
+
+
+
+Utilização de outras taglibs para criação de componentes na tela
+
+
+
+
+
+Escopos no JSF - Request, Session, Application, View
+
+Links:
+
+	https://www.portaleducacao.com.br/conteudo/artigos/informatica/entendendo-os-escopos-no-jsf-(javaserver-faces)/56539
+
+	https://www.devmedia.com.br/escopos-de-managed-beans-no-jsf-2-0/20436
+
+	http://eumaismais.com.br/2016/03/31/jsf-entendendo-e-utilizando-corretamente-os-escopos/
+
+
+
+
+
+O que é FacesContext, Validadores
+
+Validador :
+
+public void comecarComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {}
+
+Assinatura padrão de um método que será validador:
+
+	FacesContext a view que está sendo processada no momento
+	UIComponent, componente da view que será validado.
+	Object valor que será avaliado.
 	
+	Necessário lançar uma exceção do tipo ValidatorException para que seja lançada pelo h:message, h:messages ou algo do tipo
+
 	

@@ -73,10 +73,11 @@ public class PopulaBanco {
 
 	private static Livro geraLivro(String isbn, String titulo, String data,
 			double preco, Autor autor) {
+		
 		Livro livro = new Livro();
 		livro.setIsbn(isbn);
 		livro.setTitulo(titulo);
-		livro.setDataLancamento(data);
+		livro.setDataLancamento( parseData(data) );
 		livro.setPreco(preco);
 		livro.adicionaAutor(autor);
 		return livro;
