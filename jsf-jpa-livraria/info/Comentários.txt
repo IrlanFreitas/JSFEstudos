@@ -291,3 +291,88 @@ perder o focus. Ao preencher os outros dados e gravar o livro será testada a exi
 AJAX para enviá-lo e atualizar a sua tabela. No final podemos cadastrar o Livro, que causa a atualização do formulário e da tabela de livros. 
 Repare que em nenhum momento a página foi atualizada totalmente, pois utilizamos AJAX.
 
+
+
+
+
+
+
+
+Navegação entre Páginas e o Ciclo de vida - JSF.
+
+Navegação, links: {
+	https://stackoverflow.com/questions/11242240/semantics-of-faces-redirect-true-in-commandlink-action-and-why-not-use
+	https://stackoverflow.com/questions/2990399/faces-redirect-true-in-jsf
+}
+
+Necessária um configuração no arquivo faces-config.xml :
+
+	<lifecycle>
+    	<phase-listener>br.com.caelum.livraria.utils.LogPhaseListener</phase-listener>
+    </lifecycle>
+    
+Também é interessante desabilitar o log do Hibernate.
+
+Ciclo de vida - Explicado:
+
+Criação da view e renderização: RESTORE_VIEW e RENDER_RESPONSE
+
+Agora o console do Eclipse só mostra a saída do nosso PhaseListener. Podemos ver que duas fases foram acionadas, 
+a primeira chamada RESTORE_VIEW e outra, a sexta fase chamada RENDER_RESPONSE. Repare que o PhaseListener automaticamente 
+numerou as fases.
+Ao receber uma requisição HTTP do tipo GET o controlador iniciou o ciclo da vida da tela. Isso significa que ele leu o 
+arquivo xhtml e instanciou todos os componentes. Como isso foi disparado pela requisição inicial está claro que não 
+há nada a fazer além de renderizar a resposta.
+
+
+
+Analisandos as fases: APPLY_REQUEST_VALUES e PROCESS_VALIDATION
+
+No Eclipse novamente limparemos a console e mais uma vez no navegador usaremos o formulário para executar uma validação. 
+Lembrando que o campo do título automaticamente envia uma requisição AJAX ao perder foco e consequentemente é executada 
+a validação no lado do servidor.
+Olhando o console no Eclipse podemos ver que dessa vez foram executadas 4 fases. Temos como segunda fase o APPLY_REQUEST_VALUES, 
+e como terceira fase PROCESS_VALIDATION.
+
+Vamos analisar também esse caso. Como sempre o controlador recebeu a requisição mas agora ela é do tipo POST. 
+Isso significa que o controlador apenas recupera a árvore (por isso se chama RESTORE_VIEW). Após a recuperação 
+da tela os componentes recebem o valor digitado pelo usuário que vem da requisição (dai vem o nome APPLY_REQUEST_VALUE). 
+Nesse caso submetemos apenas o valor do titular, mas em branco. Em outras palavras, o componente do titular 
+recebe um String vazio.
+
+Na terceira fase acontece a conversão, se for preciso, e a validação. O titulo não precisa ser convertido pois o 
+titulo é do tipo String, mas associamos uma validação com o componente. É justamente essa validação que falha. 
+Em geral, se há um problema de conversão ou validação, o controlador pula automaticamente as fases quatro e cinco 
+e pede renderizar o HTML com as mensagens de erro.
+
+
+
+Todas as fases do ciclo
+
+Agora testaremos o que acontece quando escolhemos um autor no combobox. Vamos apertar o botão e verificar a console de novo. 
+Repare que agora foram executadas todas as seis fases. Na primeira fase (RESTORE_VIEW) foi recuperada a árvore de componentes 
+da sessão, na segunda (APPLY_REQUEST_VALUES) os componentes receberam os parâmetros da requisição e na terceira (PROCESS_VALIDATION) 
+todos os dados foram convertidos e validados.
+
+Como nenhum erro ocorreu na terceira fase o controlador continua com a próxima que se chama UPDATE_VALUES. 
+Aqui o modelo será atualizado com os valores convertidos na fase anterior. Neste caso, LivroBean recebe apenas ID do autor 
+já que só enviamos essa parâmetro pelo AJAX. Em geral, nesta fase, tudo que definimos com a expression language nos 
+componentes de inputs é atualizado no modelo.
+
+Agora que o modelo já foi atualizado, nosso LivroBean já pode executar o comando definido via expression languague. 
+Este comando é um método no próprio LivroBean e opera sobre os dados convertidos. Esta fase de chamada de métodos 
+no ManagedBean é chamada de INVOKE_APPLICATION.
+
+Por fim, o JSF devolve uma resposta para o usuário, o que é feito na última fase, RENDER_RESPONSE.
+
+
+
+Uso do immediate="true" para pular fases e fazer o redirecionamento 
+
+Uso do ?faces-redirect=true para fazer o redirecionamento e não forward, isso porque será feito pelo navegador e não pelo servidor.
+    
+
+
+
+
+

@@ -60,29 +60,15 @@ public class LivroBean {
 		
 	}
 	
-	public List<Autor> getAutoresDoLivro() {
-		return this.livro.getAutores();
-	}
-	
-	public Livro getLivro() {
-		return livro;
-	}
-	
-	public List<Autor> getAutores() {
-		return this.daoAutor.listaTodos();
+	//Método que navega para outra página.
+	public String formAutor() {
+		System.out.println("Será chamado na Fase Process Validations - Chamando formulário Autor");
+		/* - Sem o parametro ?faces-redirect=true o redirecionamento é feito pelo servidor 
+			e o corredo é ser feito pelo navegador 
+		*/
+		return "autor?faces-redirect=true";
 	}
 
-	public Integer getAutorId() {
-		return autorId;
-	}
-
-	public void setAutorId(Integer autorId) {
-		this.autorId = autorId;
-	}
-	
-	public List<Livro> getLivros() {
-		return dao.listaTodos();
-	}
 	
 	//Criando o validador personalizado.
 	
@@ -124,5 +110,28 @@ public class LivroBean {
 	public void setTesteMensagem(String testeMensagem) {
 		this.testeMensagem = testeMensagem;
 	}
+	
+	public List<Autor> getAutoresDoLivro() {
+		return this.livro.getAutores();
+	}
+	
+	public Livro getLivro() {
+		return livro;
+	}
+	
+	public List<Autor> getAutores() {
+		return this.daoAutor.listaTodos();
+	}
 
+	public Integer getAutorId() {
+		return autorId;
+	}
+
+	public void setAutorId(Integer autorId) {
+		this.autorId = autorId;
+	}
+	
+	public List<Livro> getLivros() {
+		return dao.listaTodos();
+	}
 }

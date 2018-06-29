@@ -8,6 +8,7 @@
 <h:head />
 
 <h:body>
+	<h1>Novo Livro</h1>
 	<h:form>
 		<!-- Exibe todas as mensagens passada por FacesContext -->
 		<h:messages id="messages" />
@@ -45,6 +46,8 @@
 				<h:outputLabel value="Preço:" for="preco" />
 				<h:inputText id="preco" value="#{livroBean.livro.preco}" validatorMessage="#{livroBean.testeMensagem}">
 					<f:validateDoubleRange maximum="1000.00" minimum="1.00" />
+					<!-- Pelo que parece o @this faz com que não seja necessário indicar o id do elemento enviado -->
+					<f:ajax event="keyup" render="messages" />
 				</h:inputText>
 
 				<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
@@ -80,7 +83,13 @@
 				<f:ajax execute="autor" render="tabelaAutores" /> 
 				
 			</h:commandButton>
-
+			
+			<br />
+			
+			<!-- immediate="true" faz com que o comando seja executado na 
+				Fase de Aplicação de Valores - 2 e não na Fase 3, de validação -->
+			<h:commandLink value="Cadastrar Novo Autor" action="#{livroBean.formAutor}" immediate="true" />
+			
 			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor" id="tabelaAutores">
 				<h:column>
 					<h:outputText value="#{autor.nome}" />

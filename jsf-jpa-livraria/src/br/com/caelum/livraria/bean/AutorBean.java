@@ -4,6 +4,7 @@ import javax.faces.bean.ManagedBean;
 
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
+import br.com.caelum.livraria.utils.RedirectView;
 
 @ManagedBean
 public class AutorBean {
@@ -14,11 +15,16 @@ public class AutorBean {
 		return autor;
 	}
 
-	public void gravar() {
+	public RedirectView gravar() {
 		System.out.println("Gravando autor " + this.autor.getNome());
 
 		new DAO<Autor>(Autor.class).adiciona(this.autor);
 		
 		this.autor = new Autor();
+		
+		/*
+		 Depois que o livro é criado, é feito o redirecionamento pelo navegado
+		 para a página de Livro */
+		return new RedirectView("livro");
 	}
 }
