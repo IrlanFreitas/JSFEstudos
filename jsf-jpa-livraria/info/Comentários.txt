@@ -115,7 +115,7 @@ Links:
 
 
 
-O que é FacesContext, Validadores
+O que é FacesContext, Validadores, Conversores, Mensagens de Erro.
 
 Validador :
 
@@ -128,5 +128,46 @@ Assinatura padrão de um método que será validador:
 	Object valor que será avaliado.
 	
 	Necessário lançar uma exceção do tipo ValidatorException para que seja lançada pelo h:message, h:messages ou algo do tipo
-
 	
+	O primeiro parâmetro é do tipo javax.faces.context.FacesContext e permite obter informações da view processada no momento.
+
+	O segundo parâmetro é do tipo javax.faces.component.UIComponent e é um referencia ao componente que está sendo validado, normalmente um UIInput.
+
+	O terceiro parâmetro é do tipo java.lang.Object e é um objeto que representa o valor digitado pelo usuário. O objeto já foi convertido.
+
+
+
+Exemplo de conversor de data:
+
+				<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+				<h:inputText id="dataLancamento"
+					value="#{livroBean.livro.dataLancamento.time}">
+					<!-- O tipo da data é Calendar mas o conversor só sabe lidar com Date -->
+					<f:convertDateTime pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo" />
+					<!-- Máscara de data que será aceita pelo jsf -->
+				</h:inputText>
+				
+				
+
+Mensagens de Erro são passadas por:
+
+Bean Gerenciavel (ManagedBean)
+
+FacesContext.getInstance().addMessage("id_página - que é o proprio nome", new FacesMessage("Messagem que se queria passar");
+
+Exibido na JSF por:
+
+<h:messages> - Para todas as mensagens.
+
+<h:message for="id_componente"> - Para um componente específico.
+
+
+
+
+
+
+
+
+JSF com AJAX 
+

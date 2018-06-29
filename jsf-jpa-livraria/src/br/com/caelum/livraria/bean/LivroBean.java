@@ -26,6 +26,8 @@ public class LivroBean {
 	
 	private Integer autorId;
 	
+	private String testeMensagem = "Valor não aceito.";
+	
 	@PostConstruct
 	public void inicializacao() {
 		this.dao = new DAO<Livro>(Livro.class);
@@ -37,7 +39,7 @@ public class LivroBean {
 
 		if (livro.getAutores().isEmpty()) {
 //			throw new RuntimeException("Livro deve ter pelo menos um Autor.");
-			FacesContext.getCurrentInstance().addMessage("livro", new FacesMessage("Livro deve ter pelo menos um Autor."));
+			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage("Livro deve ter pelo menos um Autor."));
 			//Explicação:
 			
 			//FacesContext.getCurrentInstance() - É a instancia atual de jsf que está ligada ao ManagedBean
@@ -46,6 +48,7 @@ public class LivroBean {
 		}
 
 		this.dao.adiciona(this.livro);
+		this.livro = new Livro();
 	}
 	
 	public void adicionarAutor() {
@@ -81,6 +84,16 @@ public class LivroBean {
 		return dao.listaTodos();
 	}
 	
+	//Criando o validador personalizado.
+	
+	/*Um contexto que permite obter informações da view processada no momento, 
+	o componente da view que está sendo validado e um objeto que representa o valor digitado pelo usuário.*/
+	
+	/*O primeiro parâmetro é do tipo javax.faces.context.FacesContext e permite obter informações da view processada no momento.
+
+	O segundo parâmetro é do tipo javax.faces.component.UIComponent e é um referencia ao componente que está sendo validado, normalmente um UIInput.
+
+	O terceiro parâmetro é do tipo java.lang.Object e é um objeto que representa o valor digitado pelo usuário. O objeto já foi convertido.*/
 	public void comecarComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
 		
 		String valor = String.valueOf(value);
@@ -89,6 +102,27 @@ public class LivroBean {
 			throw new ValidatorException(new FacesMessage("ISBN deve começar com dígito 1")); //Sinaliza pro JSF que algo saiu errado.
 		}
 		
+	}
+	
+	
+	public void validarValores(FacesContext fc, UIComponent component, Object value ) throws ValidatorException {
+		
+		double valor = Double.parseDouble(value.toString());
+		
+		if (valor < 1) {
+			throw new ValidatorException(new FacesMessage("Valor é muito baixo"));
+		} else if ( valor > 1000000) {
+			throw new ValidatorException(new FacesMessage("Valor é muito alto"));
+		}
+		
+	}
+
+	public String getTesteMensagem() {
+		return testeMensagem;
+	}
+
+	public void setTesteMensagem(String testeMensagem) {
+		this.testeMensagem = testeMensagem;
 	}
 
 }
