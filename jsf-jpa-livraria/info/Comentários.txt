@@ -376,3 +376,16 @@ Uso do ?faces-redirect=true para fazer o redirecionamento e não forward, isso po
 
 
 
+Templates reutilizáveis com Facelets
+ 
+Imagens, css, javascript devem estar numa pasta chamada resources a partir do JSF 2 dentro de WebContent
+
+	WebContent/resources
+
+Voltando a tag <h:grahicImage />, definiremos dois atributos. O primeiro é o library. Nele, preencheremos com o valor img, 
+a pasta que contém nosso logo dentro de resources. O segundo é o name. Nele definimos o nome do arquivo, em nosso caso, logo.png. 
+Vamos iniciar o servidor e verificar o resultado. O logo é exibido como esperado.
+
+	<h:graphicImage library="img" name="logo.png"  />
+
+
