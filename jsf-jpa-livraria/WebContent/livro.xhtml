@@ -5,158 +5,195 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<!-- ui:composition - Indica o template que será utilizado -->
-	<ui:composition template="_template.xhtml">
-	
-		<!-- ui:define - Indica a área que será utilizada do 
+<!-- ui:composition - Indica o template que será utilizado -->
+<ui:composition template="_template.xhtml">
+
+	<!-- ui:define - Indica a área que será utilizada do 
 			template, baseado no ui:insert do template -->
-		<ui:define name="titulo">
-			Novo Livro
-		</ui:define>
-		
-		<ui:define name="conteudo">
-			<h:form>
-	
-				<!-- Exibe todas as mensagens passada por FacesContext -->
-				<h:messages id="messages" />
-				<!-- <h:message for="preco"  /> Pode ser criado o h:message para um componente somente com o atributo for.  -->
-				<fieldset>
-	
-					<legend>Dados do Livro</legend>
-					<h:panelGrid>
-	
-						<h:outputLabel value="Titulo:" for="titulo" />
-						<h:inputText id="titulo" value="#{livroBean.livro.titulo}"
-							required="true" requiredMessage="Título do livro é obrigatório"
-							validatorMessage="Campo título não pode ter mais de 40 caracteres">
-	
-							<!-- Validação de tamanho -->
-							<f:validateLength maximum="40" />
-	
-							<!-- Indicando que os dados serão enviados via AJAX, 
+	<ui:define name="titulo">
+		Novo Livro
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formAdicionaLivro">
+
+			<!-- Exibe todas as mensagens passada por FacesContext -->
+			<h:messages id="messages" />
+			<!-- <h:message for="preco"  /> Pode ser criado o h:message para um componente somente com o atributo for.  -->
+			<fieldset>
+
+				<legend>Dados do Livro</legend>
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Titulo:" for="titulo" />
+					<h:inputText id="titulo" value="#{livroBean.livro.titulo}"
+						required="true" requiredMessage="Título do livro é obrigatório"
+						validatorMessage="Campo título não pode ter mais de 40 caracteres">
+
+						<!-- Validação de tamanho -->
+						<f:validateLength maximum="40" />
+
+						<!-- Indicando que os dados serão enviados via AJAX, 
 							junto com o evento que o ativa, nesse caso, a perda do foco -->
-							<!-- Necessário sempre lembrar de atualizar os componente necessários -->
-							<f:ajax event="blur" render="messages" />
-	
-						</h:inputText>
-	
-						<h:outputLabel value="ISBN:" for="isbn" />
-						<h:inputText id="isbn" value="#{livroBean.livro.isbn}"
-							validator="#{livroBean.comecarComDigitoUm}">
-							<!-- Criando o validador personalizado de ISBN-->
-	
-							<!-- Fazendo a validação por ajax, com a perda de focus(blur)
+						<!-- Necessário sempre lembrar de atualizar os componente necessários -->
+						<f:ajax event="blur" render="messages" />
+
+					</h:inputText>
+
+					<h:outputLabel value="ISBN:" for="isbn" />
+					<h:inputText id="isbn" value="#{livroBean.livro.isbn}"
+						validator="#{livroBean.comecarComDigitoUm}">
+						<!-- Criando o validador personalizado de ISBN-->
+
+						<!-- Fazendo a validação por ajax, com a perda de focus(blur)
 								e renderizando a mensagem -->
-							<f:ajax execute="isbn" render="messages" event="keyup" />
-						</h:inputText>
-	
-						<h:outputLabel value="Preço:" for="preco" />
-						<h:inputText id="preco" value="#{livroBean.livro.preco}"
-							validatorMessage="#{livroBean.testeMensagem}">
-							<f:validateDoubleRange maximum="1000.00" minimum="1.00" />
-							<!-- Pelo que parece o @this faz com que não seja necessário indicar o id do elemento enviado -->
-							<f:ajax event="keyup" render="messages" />
-						</h:inputText>
-	
-						<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-						<h:inputText id="dataLancamento"
-							value="#{livroBean.livro.dataLancamento.time}">
-							<!-- O tipo da data é Calendar mas o conversor só sabe lidar com Date -->
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-							<!-- Máscara de data que será aceita pelo jsf -->
-						</h:inputText>
-	
-					</h:panelGrid>
-				</fieldset>
-				<fieldset>
-	
-					<legend>Dados do Autor</legend>
-	
-					<h:outputLabel value="Selecione o Autor:" for="autor" />
-	
-					<h:selectOneMenu value="#{livroBean.autorId}" id="autor">
-	
-						<f:selectItems value="#{livroBean.autores}" var="autor"
-							itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
-	
-					</h:selectOneMenu>
-	
-					<h:commandButton value="Adicionar"
-						action="#{livroBean.adicionarAutor}">
-	
-						<!--Indicando que será somente o valor do combo-box no 
+						<f:ajax execute="isbn" render="messages" event="keyup" />
+					</h:inputText>
+
+					<h:outputLabel value="Preço:" for="preco" />
+					<h:inputText id="preco" value="#{livroBean.livro.preco}"
+						validatorMessage="#{livroBean.testeMensagem}">
+						<f:validateDoubleRange maximum="1000.00" minimum="1.00" />
+						<!-- Pelo que parece o @this faz com que não seja necessário indicar o id do elemento enviado -->
+						<f:ajax event="keyup" render="messages" />
+					</h:inputText>
+
+					<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+					<h:inputText id="dataLancamento"
+						value="#{livroBean.livro.dataLancamento.time}">
+						<!-- O tipo da data é Calendar mas o conversor só sabe lidar com Date -->
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<!-- Máscara de data que será aceita pelo jsf -->
+					</h:inputText>
+
+				</h:panelGrid>
+			</fieldset>
+			<fieldset>
+
+				<legend>Dados do Autor</legend>
+
+				<h:outputLabel value="Selecione o Autor:" for="autor" />
+
+				<h:selectOneMenu value="#{livroBean.autorId}" id="autor">
+
+					<f:selectItems value="#{livroBean.autores}" var="autor"
+						itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
+
+				</h:selectOneMenu>
+
+				<h:commandButton value="Adicionar"
+					action="#{livroBean.adicionarAutor}">
+
+					<!--Indicando que será somente o valor do combo-box no 
 						execute="" que recebe o id do componente que será enviado via AJAX  -->
-						<!-- Depois de feito isso, é necessário atualizar o compomente 
+					<!-- Depois de feito isso, é necessário atualizar o compomente 
 						com o atributo, render="id1, id2" -->
-						<f:ajax execute="autor" render="tabelaAutores" />
-	
-					</h:commandButton>
-	
-					<br />
-	
-					<!-- immediate="true" faz com que o comando seja executado na 
+					<f:ajax execute="autor" render="tabelaAutores" />
+
+				</h:commandButton>
+
+				<br />
+
+				<!-- immediate="true" faz com que o comando seja executado na 
 						Fase de Aplicação de Valores - 2 e não na Fase 3, de validação -->
-					<h:commandLink value="Cadastrar Novo Autor"
-						action="#{livroBean.formAutor}" immediate="true" />
-	
-					<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
-						id="tabelaAutores">
-						<h:column>
-							<h:outputText value="#{autor.nome}" />
-						</h:column>
-					</h:dataTable>
-	
-				</fieldset>
-				<p>
-					<h:commandButton value="Gravar" action="#{livroBean.gravar}">
-	
-						<!-- execute="@form", indica o envio do formulário inteiro para facilitar -->
-						<!-- Existem outras possíbilidades como @all, @form, @this, @none -->
-						<!-- tabelaLivros está fora do formulário, para que o AJAX o encontre, é necessário
+				<h:commandLink value="Cadastrar Novo Autor"
+					action="#{livroBean.formAutor}" immediate="true" />
+
+				<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+					id="tabelaAutores">
+					<h:column>
+		
+						<h:outputText value="#{autor.nome}" />
+					</h:column>
+					
+					<h:column>
+						<!-- Faltou o IMMEDIATE=TRUE para funcionar -->
+						<h:commandLink action="#{livroBean.removerAutor(autor)}" value="X" immediate="true" />
+							
+					</h:column>
+				</h:dataTable>
+
+			</fieldset>
+			<p>
+				<h:commandButton value="Limpar campos"
+					action="#{livroBean.limparCampos}">
+					<f:ajax render="@form " />
+				</h:commandButton>
+			</p>
+			<p>
+				<h:commandButton value="Gravar" action="#{livroBean.gravar}">
+
+					<!-- execute="@form", indica o envio do formulário inteiro para facilitar -->
+					<!-- Existem outras possíbilidades como @all, @form, @this, @none -->
+					<!-- tabelaLivros está fora do formulário, para que o AJAX o encontre, é necessário
 						o caminho absoluto, indicado por :idDoComponente -->
-						<f:ajax execute="@form" render="@form :tabelaLivros" />
-	
-					</h:commandButton>
-				</p>
-				<fieldset>
-	
-					<legend> Livros </legend>
-	
-					<h:dataTable value="#{livroBean.livros}" id="tabelaLivros"
-						var="livro" style="width:100%; text-align:center">
-	
-	
-						<h:column>
-							<f:facet name="header">Título</f:facet>
-							<h:outputText value="#{livro.titulo}" />
-						</h:column>
-	
-						<h:column>
-							<f:facet name="header">ISBN</f:facet>
-							<h:outputText value="#{livro.isbn}" />
-						</h:column>
-	
-						<h:column>
-							<f:facet name="header">Preço</f:facet>
-							<h:outputText value="#{livro.preco}">
-								<f:convertNumber type="currency" pattern="R$ #0.00"
-									currencySymbol="R$" locale="pt_BR" />
-							</h:outputText>
-						</h:column>
-	
-						<h:column>
-							<f:facet name="header">Data</f:facet>
-							<h:outputText value="#{livro.dataLancamento.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</h:column>
-					</h:dataTable>
-	
-				</fieldset>
-	
-			</h:form>
-		</ui:define>
-		<ui:define name="indicacaoPagina">Cadastros de Livros</ui:define>
-	</ui:composition>
+					<f:ajax execute="@form"
+						render="@form :formTabelaLivros:tabelaLivros" />
+
+				</h:commandButton>
+			</p>
+		</h:form>
+		<h:form id="formTabelaLivros">
+			<fieldset>
+
+				<legend> Livros </legend>
+
+				<h:dataTable value="#{livroBean.livros}" id="tabelaLivros"
+					var="livro" style="width:100%; text-align:center">
+
+
+					<h:column>
+						<f:facet name="header">Título</f:facet>
+						<h:outputText value="#{livro.titulo}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">ISBN</f:facet>
+						<h:outputText value="#{livro.isbn}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Preço</f:facet>
+						<h:outputText value="#{livro.preco}">
+							<f:convertNumber type="currency" pattern="R$ #0.00"
+								currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{livro.dataLancamento.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Alterar</f:facet>
+						<!-- Não foi necessário AJAX, obs.: Eu tentei n vezes kkkk -->
+						<h:commandLink action="#{livroBean.carregar(livro.id)}"
+							value="altera">
+							<!-- <f:ajax render=":formAdicionaLivro" /> -->
+						</h:commandLink>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Remover</f:facet>
+						<!-- Não foi necessário AJAX, obs.: Eu tentei n vezes kkkk -->
+						<h:commandLink id="remover" action="#{livroBean.remover(livro)}"
+							value="X" />
+					</h:column>
+
+				</h:dataTable>
+
+			</fieldset>
+
+		</h:form>
+	</ui:define>
+	<!-- <p:dialog header="Notificacao" widgetVar="dialog" modal="true"
+		height="100">
+		<h:outputText value="#{livroBean.mensagemDialog}" />
+	</p:dialog> -->
+	<ui:define name="indicacaoPagina">Cadastros de Livros</ui:define>
+</ui:composition>
 
 </html>

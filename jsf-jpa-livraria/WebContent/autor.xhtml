@@ -8,6 +8,7 @@
 	<ui:composition template="_template.xhtml">
 		<ui:define name="titulo">Novo Autor</ui:define>
 		<ui:define name="conteudo">
+		
 			<h:form>
 				<fieldset>
 					<legend>Dados do Autor</legend>
@@ -24,6 +25,31 @@
 					</h:panelGrid>
 				</fieldset>
 			</h:form>
+			
+			<h:form>
+				<fieldset>
+					<legend>Autores </legend>
+					
+					<h:dataTable value="#{autorBean.autores}" id="tabelaAutores"
+					var="autor" style="width:100%; text-align:center">
+
+					<h:column>
+						<f:facet name="header">Título</f:facet>
+						<h:outputText value="#{autor.nome}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Remover</f:facet>
+						<!-- Não foi necessário AJAX, obs.: Eu tentei n vezes kkkk -->
+						<h:commandLink id="remover" action="#{autorBean.remover(autor)}"
+							value="X" />
+					</h:column>
+
+				</h:dataTable>
+
+				</fieldset>
+			</h:form>
+			
 		</ui:define>
 		<ui:define name="indicacaoPagina">Cadastro de Autores</ui:define>
 	</ui:composition>

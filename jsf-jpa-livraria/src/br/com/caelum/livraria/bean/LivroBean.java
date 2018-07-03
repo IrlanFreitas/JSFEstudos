@@ -28,6 +28,8 @@ public class LivroBean {
 	
 	private String testeMensagem = "Valor não aceito.";
 	
+//	private String mensagemDialog = "";
+	
 	@PostConstruct
 	public void inicializacao() {
 		this.dao = new DAO<Livro>(Livro.class);
@@ -46,8 +48,14 @@ public class LivroBean {
 			//addMessage() - recebe a jsf que a mensagem irá e a mensagem, id registrado no facesContext, como livro.xhtml onde o id é livro, isso aparecerá no h:messages
 			return;
 		}
-
-		this.dao.adiciona(this.livro);
+		System.out.println();
+		
+		if (livro.getId() != null && livro.getId() != 0) {
+			this.dao.atualiza(this.livro);
+		} else {
+			this.dao.adiciona(this.livro);			
+		}
+		
 		this.livro = new Livro();
 	}
 	
@@ -68,7 +76,33 @@ public class LivroBean {
 		*/
 		return "autor?faces-redirect=true";
 	}
-
+	
+	public void remover(Livro livro) {
+		try { 
+//			RequestContext.getCurrentInstance().execute("dialog.show();");
+			dao.remove(livro);
+			//Importante logar as ações feitas pela sistema.
+			System.out.println("LOG - Removendo livro "+ livro.getId() + " - "+ livro.getTitulo());
+//			this.mensagemDialog = "Livro excluído com sucesso!"; 
+		} catch (Exception e) {
+			e.printStackTrace();
+//			this.mensagemDialog = "Houve um problema na exclusão do livro.";
+		}
+	}
+	
+	public void carregar(Integer livroId) {
+		System.out.println(livroId);
+		this.livro = dao.obterLivro(livroId);
+	}
+	
+	public void limparCampos() {
+		this.livro = new Livro();
+	}
+	
+	public void removerAutor(Autor autor ) {
+		this.livro.getAutores().remove(autor);
+		System.out.println("Removendo autor");
+	}
 	
 	//Criando o validador personalizado.
 	

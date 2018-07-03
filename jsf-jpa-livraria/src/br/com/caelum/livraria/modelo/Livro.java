@@ -79,5 +79,11 @@ public class Livro {
 		this.dataLancamento = dataLancamento;
 	}
 
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", titulo=" + titulo + ", isbn=" + isbn + ", preco=" + preco + ", dataLancamento="
+				+ dataLancamento + ", autores=" + autores + "]";
+	}
+
 
 }

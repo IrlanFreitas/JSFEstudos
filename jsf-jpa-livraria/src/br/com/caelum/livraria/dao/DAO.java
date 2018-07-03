@@ -3,7 +3,10 @@ package br.com.caelum.livraria.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
+
+import br.com.caelum.livraria.modelo.Livro;
 
 public class DAO<T> {
 
@@ -77,7 +80,19 @@ public class DAO<T> {
 
 		return (int) result;
 	}
-
+	
+	public Livro obterLivro(Integer id) {
+		EntityManager em = new JPAUtil().getEntityManager();
+		
+		String jpql = "SELECT livro FROM Livro livro "
+				+ " JOIN FETCH livro.autores Autor "
+				+ " WHERE livro.id = :Pid ";
+		
+		TypedQuery<Livro> query = em.createQuery(jpql, Livro.class);
+		query.setParameter("Pid", id);
+		return query.getSingleResult();
+	}
+	
 	public List<T> listaTodosPaginada(int firstResult, int maxResults) {
 		EntityManager em = new JPAUtil().getEntityManager();
 		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);

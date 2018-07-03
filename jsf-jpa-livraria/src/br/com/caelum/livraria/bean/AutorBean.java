@@ -1,5 +1,8 @@
 package br.com.caelum.livraria.bean;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
 import br.com.caelum.livraria.dao.DAO;
@@ -10,7 +13,14 @@ import br.com.caelum.livraria.utils.RedirectView;
 public class AutorBean {
 
 	private Autor autor = new Autor();
-
+	
+	private DAO<Autor> dao;
+	
+	@PostConstruct
+	public void inicializar() {
+		dao = new DAO<Autor>(Autor.class);
+	}
+	
 	public Autor getAutor() {
 		return autor;
 	}
@@ -27,4 +37,14 @@ public class AutorBean {
 		 para a página de Livro */
 		return new RedirectView("livro");
 	}
+	
+	public List<Autor> getAutores() {
+		return dao.listaTodos();
+	}
+	
+	public void remover(Autor autor) {
+		dao.remove(autor);
+		System.out.println("LOG - Removendo autor");
+	}
+	
 }
