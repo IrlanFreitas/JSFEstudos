@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.caelum.livraria.modelo.Livro;
+import br.com.caelum.livraria.modelo.Usuario;
 
 public class DAO<T> {
 
@@ -104,5 +105,26 @@ public class DAO<T> {
 		em.close();
 		return lista;
 	}
-
+	
+	public Usuario acessar(Usuario usuario) {
+		
+		String jpql = "SELECT us FROM Usuario us "
+				+ " WHERE us.email = :pEmail AND us.senha = :pSenha";
+		
+		EntityManager em = new JPAUtil().getEntityManager();
+		em.getTransaction().begin();
+		
+		TypedQuery<Usuario> query = em.createQuery(jpql, Usuario.class);
+		query.setParameter("pEmail", usuario.getEmail());
+		query.setParameter("pSenha", usuario.getSenha());
+		
+		try {
+			return query.getSingleResult();			
+		}catch (Exception e) {
+			return null;
+		} finally {
+			em.close();
+		}
+	}
+	
 }

@@ -141,6 +141,9 @@ public class LivroBean {
 	
 	public void carregarLivroPeloId() {
 		this.livro = dao.obterLivro(this.livroId);
+		if (this.livro == null) {
+			FacesContext.getCurrentInstance().addMessage("livro", new FacesMessage("Livro não encontrado!"));
+		}
 	}
 
 	public String getTesteMensagem() {
