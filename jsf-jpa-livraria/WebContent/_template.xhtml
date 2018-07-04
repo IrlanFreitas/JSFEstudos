@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" >
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
-	<!-- Necessário para o funcionamento do JSF com AJAX pois, JSF irá importar o JS necessário a página. -->
+	<!-- NecessÃ¡rio para o funcionamento do JSF com AJAX pois, JSF irÃ¡ importar o JS necessÃ¡rio a pÃ¡gina. -->
 	<h:head>
 		<link rel="stylesheet"  href="./resources/css/_template.css" />
 	</h:head>
@@ -13,8 +12,8 @@
 	<h:body>
 		<div id="cabecalho" >
 			<h:graphicImage library="img" name="logo.png"  />
-			<!-- ui:insert - Serve para definir os campos que serão utilizados
-				junto com o name, para ser utiliza para página que utilazará 
+			<!-- ui:insert - Serve para definir os campos que serÃ£o utilizados
+				junto com o name, para ser utiliza para pÃ¡gina que utilazarÃ¡ 
 				o template, indicado o campo  -->
 			<h1> <ui:insert name="titulo"></ui:insert> </h1>
 		</div>
@@ -23,7 +22,7 @@
 			<ui:insert name="conteudo"></ui:insert>
 		</div>
 		<div id="rodape" class="rodape" >
-			<ui:insert name="indicacaoPagina" ></ui:insert> Copyright &copy; 2018
+			<ui:insert name="indicacaoPagina" ></ui:insert> Copyright &#169; 2018
 		</div>
 	</h:body>
 </html>

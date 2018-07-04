@@ -18,6 +18,8 @@ public class AutorBean {
 	
 	private DAO<Autor> dao;
 	
+	private Integer autorId;
+	
 	@PostConstruct
 	public void inicializar() {
 		dao = new DAO<Autor>(Autor.class);
@@ -27,16 +29,24 @@ public class AutorBean {
 		return autor;
 	}
 
-	public RedirectView gravar() {
+	public void gravar() {
 		System.out.println("Gravando autor " + this.autor.getNome());
-
-		new DAO<Autor>(Autor.class).adiciona(this.autor);
+		
+		if (autor.getId() != null && autor.getId() != 0) {
+			dao.atualiza(this.autor);
+		} else {
+			dao.adiciona(this.autor);			
+		}
 		
 		this.autor = new Autor();
 		
 		/*
 		 Depois que o livro é criado, é feito o redirecionamento pelo navegado
 		 para a página de Livro */
+//		return new RedirectView("livro");
+	}
+	
+	public RedirectView irParaLivro() {
 		return new RedirectView("livro");
 	}
 	
@@ -47,6 +57,24 @@ public class AutorBean {
 	public void remover(Autor autor) {
 		dao.remove(autor);
 		System.out.println("LOG - Removendo autor");
+	}
+	
+	public void carregar(Autor autor) {
+		System.out.println(autor);
+		this.autor = autor;
+		System.out.println("LOG - Carregando autor");
+	}
+	
+	public void carregarAutorPelaId() {
+		this.autor = dao.buscaPorId(this.autorId);
+	}
+
+	public Integer getAutorId() {
+		return autorId;
+	}
+
+	public void setAutorId(Integer autorId) {
+		this.autorId = autorId;
 	}
 	
 }

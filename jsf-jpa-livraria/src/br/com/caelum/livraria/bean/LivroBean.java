@@ -26,6 +26,8 @@ public class LivroBean {
 	
 	private Integer autorId;
 	
+	private Integer livroId;
+	
 	private String testeMensagem = "Valor não aceito.";
 	
 //	private String mensagemDialog = "";
@@ -136,6 +138,10 @@ public class LivroBean {
 		}
 		
 	}
+	
+	public void carregarLivroPeloId() {
+		this.livro = dao.obterLivro(this.livroId);
+	}
 
 	public String getTesteMensagem() {
 		return testeMensagem;
@@ -167,5 +173,17 @@ public class LivroBean {
 	
 	public List<Livro> getLivros() {
 		return dao.listaTodos();
+	}
+
+	public void setLivro(Livro livro) {
+		this.livro = livro;
+	}
+
+	public Integer getLivroId() {
+		return livroId;
+	}
+
+	public void setLivroId(Integer livroId) {
+		this.livroId = livroId;
 	}
 }

@@ -389,3 +389,46 @@ Vamos iniciar o servidor e verificar o resultado. O logo é exibido como esperado
 	<h:graphicImage library="img" name="logo.png"  />
 
 
+
+
+
+
+Atualizando para JSF 2.2.
+Mudando os namespaces (Import's).
+Usando o recurso viewAction(Executar alguma ação quando carrega a página), é a passagem de parametro via URI.
+Adicionando atributos as tags do JSF por meio de f:passThroughAttribute.
+
+ViewAction
+
+Queremos passar no formulário o autor a ser editado, e o formulário deverá vir preenchido automaticamente. 
+Isso é algo muito comum na web e normalmente é feito através de um parâmetro na requisição GET, por exemplo:
+
+http://localhost:8080/livraria/autor.xhtml?autorId=1
+
+Ou seja, queremos enviar um GET mas já populando o formulário com o autor que possui a id 1! Como fazer isso? 
+Bom, JSF 2.2 trouxe um recurso para tal, que foi batizado de viewAction. Podemos associar, ao construir a view, 
+uma ação que vai carregar o autor automaticamente!
+
+Atributos passThrough
+
+Tudo mundo já ouviu falar de HTML5, certo? HTML5 é a nova versão da linguagem HTML, que traz importantes mudanças, 
+entre eles várias novas tags para criar páginas mais semânticas.
+
+Podemos ver as novas funcionalidades e a documentação do HTML 5 diretamente no site do W3Schools: 
+http://www.w3schools.com/html/html_form_input_types.asp
+
+Agora temos o problema que toda nossa página HTML é renderizada através dos componentes JSF. 
+Perdemos o controle do HTML que é um tradeoff do mundo JSF. Mas felizmente o JSF 2.2 trouxe uma solução para 
+aproveitar algumas novas tags do HTML5. Essa nova feature se chama passThroughAttribute.
+
+A ideia é que podemos definir um atributo no componente, que é simplesmente passado para o HTML, 
+sem alteração. Assim, podemos incluir atributos que são ignorados no mundo JSF, mas importam dentro do HTML.
+
+Veja o exemplo abaixo, onde definimos um inputText que recebe um atributo type=”email” usando 
+o componente aninhado f:passThroughAttribute. Baseado nesse atributo o navegador executa uma 
+validação do e-mail digitado, mas no mundo JSF não há nenhuma importância:
+
+<h:outputLabel value="Email:" for="email" />
+<h:inputText value="#{autorBean.autor.email}" id="email">
+      <f:passThroughAttribute name="type" value="email" />
+</h:inputText>
