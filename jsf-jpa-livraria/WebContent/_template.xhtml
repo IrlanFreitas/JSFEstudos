@@ -12,7 +12,15 @@
 	
 	<h:body>
 		<div id="cabecalho" >
+		
 			<h:graphicImage library="img" name="logo.png"  />
+			<h:form >
+			
+				<!-- A porcaria do botão só funcionou dentro do h:form -->
+			
+				<h:commandButton style="display: block;" value="Logout" action="#{loginBean.logout}" rendered="#{loginBean.usuarioLogado}"  />		
+			</h:form>
+			
 			<!-- ui:insert - Serve para definir os campos que serão utilizados
 				junto com o name, para ser utiliza para página que utilazará 
 				o template, indicado o campo  -->
@@ -23,6 +31,10 @@
 			<ui:insert name="conteudo"></ui:insert>
 		</div>
 		<div id="rodape" class="rodape" >
+			<!-- Pagando o atributo da sessão e exibindo na tela -->
+			<p style="text-align:center; margin: 0; "> #{sessionScope.usuarioLogado.email} </p>
+			<!-- <h:outputText value="#{sessionScope['usuarioLogado'].email}" />  -->
+			
 			<ui:insert name="indicacaoPagina" ></ui:insert> Copyright &#169; 2018
 		</div>
 	</h:body>

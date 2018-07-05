@@ -432,3 +432,100 @@ validação do e-mail digitado, mas no mundo JSF não há nenhuma importância:
 <h:inputText value="#{autorBean.autor.email}" id="email">
       <f:passThroughAttribute name="type" value="email" />
 </h:inputText>
+
+
+
+
+
+Autenticação do Usuário
+
+No capítulo anterior, foi falado sobre a autenticação do usuário, como fazer o seu login. 
+Mas nós só verificamos se o usuário estava correto ou não, o problema ainda é que podemos acessar livremente 
+qualquer página da nossa aplicação através da sua URL específica, como localhost:8080/livraria/livro.xhtml ou 
+localhost:8080/livraria/autor.xhtml, ou seja, atualmente não é necessário estar logado para acessar as páginas 
+da nossa aplicação. Precisamos fechar o acesso às nossa páginas, somente um usuário com login feito que pode 
+acessá-las, precisamos fazer a autorização do usuário, e é isso que faremos nesse capítulo.
+
+O PhaseListener
+
+Precisamos verificar cada requisição para nossa aplicação. Ou seja, antes de fazer qualquer coisa devemos checar se 
+o usuário já fez login, se sim, ele pode continuar, se não, o usuário será redirecionado para a página de login. 
+Se você já assistiu algum treinamento sobre Servlets, Spring MVC ou VRaptor, por exemplo, já usou um recurso para 
+essa autorização do usuário, esse recurso é o filtro, ou interceptador. Precisamos filtrar, interceptar todas as 
+requisições, para checar se o usuário já fez login.
+
+Só que nós estamos no mundo JSF, então vamos focar no que o JSF nos oferece. Vamos utilizar um recurso já visto 
+para filtrar as requisições, o PhaseListener, nada nos impede de utilizá-lo para algo mais sofisticado, como a 
+autorização do usuário.
+
+Como saber se o usuário fez login?
+
+Na classe LoginBean, no método efetuaLogin, verificamos em um if se o usuário existe, então a ideia é que 
+se o usuário existe, guardamos a informação em algum lugar, para depois poder testar nas próximas requisições 
+se o usuário se autenticou ou não. Então é dentro desse if que guardaremos essa informação, mas como?
+
+Geralmente, em uma aplicação web, usamos a sessão HTTP para guardar essa informação sobre o usuário, e 
+aqui não será diferente. Mas como acessar essa sessão? Primeiro pegamos a instância do facesContext, e 
+como já vimos anteriormente, pegamos-o em qualquer lugar através do método getCurrentInstance().
+
+Com o context em mãos, podemos acessar objetos que rodam ao nível das servlets, através do método getExternalContext(). 
+E com isso podemos pegar a sessão HTTP, utilizando o método getSessionMap(). A sessão HTTP na verdade é um mapa que
+podemos guardar dados através da relação chave-valor.
+
+Navegando programaticamente
+
+Mas se chegamos ao final do código, significa que o usuário não acessou a página de login, e ele não se autenticou, 
+ou seja, devemos redirecioná-lo para a página de login. Para isso, precisamos fazer uma navegação programaticamente 
+com o JSF, e para isso o JSF possui um objeto específico para fazer essa navegação, o NavigationHandler.
+
+Esse navegador vem do nosso context, mas antes temos que pegar os dados da aplicação, através do método getApplication(), 
+para aí acessá-lo, chamando o método getNavigationHandler(). E a partir desse handler que chamamos o método handleNavigation, 
+que recebe três parâmetros. O primeiro parâmetro é o context, que já temos; o segundo parâmetro seria o nome da nossa 
+página caso a mesma estivesse cadastrada no faces-config.xml, mas como não utilizamos isso, utilizamos a string 
+completa de redirecionamento da página, passaremos o valor null; e o terceiro é a página para onde queremos ir, 
+e queremos ir para login.xhtml, logo "/login?faces-redirect=true".
+
+Por fim, não basta definir somente a navegação, também precisamos renderizar a resposta, através do método renderResponse() 
+do context, isso quer dizer que o JSF pulará todas as fases e irá logo para a último, para renderizar a resposta
+
+
+Explicação de Como funciona o OUTCOME no JSF 1.x
+
+Com JSF 2.x estamos acostumados a definir a navegação entre páginas confortavelmente no bean. 
+Por exemplo usamos no método gravar do AutorBean:
+
+    public String gravar() {
+        //codigo omitido
+
+        return "livro?faces-redirect=true";
+    }
+No JSF 1.x isso não era possível! Então como era feita a navegação?
+
+Repare que o método gravar devolve uma string. A ideia desse retorno não era para ser o nome da página e 
+sim algum sinal para o controlador JSF. Esse sinal também se chama de outcome. Então o nosso método ficaria:
+
+    public String gravar() {
+        //codigo omitido
+
+        return "ok"; //devolvendo um sinal ou outcome
+    }
+    
+Mas o que o controlador fará com esse outcome? A resposta é simples, vai procurá-lo no XML!! 
+No JSF 1.x era obrigatório definir todas as navegações no faces-config.xml. Bastante burocrático, não?
+
+Dentro do faces-config.xml fica toda navegação centralizada definida através de um elemento 
+navigation-rule. Veja o exemplo:
+
+<navigation-rule>
+    <from-view-id>autor.xhtml</from-view-id>
+    <navigation-case>
+        <from-outcome>ok</from-outcome>
+        <to-view-id>livro.xhtml</to-view-id>
+        <redirect />
+    </navigation-case>
+</navigation-rule>
+
+O JSF 2.x simplificou muito o desenvolvimento comparado com a versão 1.x, mas a n
+avegação antiga continua válida e poderia ser utilizada no nosso projeto.
+
+
